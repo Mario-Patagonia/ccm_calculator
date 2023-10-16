@@ -1,110 +1,72 @@
 sap.ui.define([
+    "zui5ccm/ccmcalculator/model/Constant",
+    "zui5ccm/ccmcalculator/util/TempUploadHelper",
+    "sap/m/library",
     "sap/m/MessageBox"
-], function (MessageBox) {
+], function (Constant, TempUploadHelper, mLibrary, MessageBox) {
     'use strict';
 
-    const batchSize = 100;
-    const columns = ["Check Title", "Check Message", "SAP Note Number", "Ref. Object Type", "Ref. Object Name", "Object Type", "Object Name", "Priority", "Package", "Usage Information"];
+    const columns = Constant.Columns;
+    const ButtonType = mLibrary.ButtonType;
 
     return {
-        async openSpreadsheetUploadDialog(oEvent) {
-            this.getView().setBusyIndicatorDelay(0)
-            this.getView().setBusy(true)
-            this.spreadsheetUpload = await this.getView().getController().getOwnerComponent().createComponent({
-                usage: "spreadsheetImporter",
-                async: true,
-                componentData: {
-                    context: this,
-                    columns,
-                    standalone: true
-                }
-            });
 
-            this.spreadsheetUpload.openSpreadsheetUploadDialog();
-            this.getView().setBusy(false);
+        // onAfterRendering() {
+        //     const oView = this.getView();
 
-            this.spreadsheetUpload.attachUploadButtonPress(this.onUploadButtonPress.bind(this));
-        },
+        //     const oUploadButton = this.byId(oView.createId("action::spreadsheetUploadButton"));
+        //     oUploadButton.setType(ButtonType.Emphasized);
+        // },
 
-        async onUploadButtonPress(oEvent) {
-            this.getView().setBusy(true);
-            const oModel = this.getView().getModel();
-            const aChunks = this._createChunks(oEvent.getParameter("rawData"));
+        // /**
+        //  * 
+        //  * @returns {zui5ccm.ccmcalculator.util.TempUploadHelper}
+        //  */
+        // getTempUploadHelper() {
+        //     this.oTempUploadHelper ??= new TempUploadHelper(this.getView().getModel());
+        //     return this.oTempUploadHelper;
+        // },
 
-            // map all chunks to a request promise
-            const aChunkPromises = aChunks.map((aRows) => {
-                for (const oRow of aRows) {
-                    const oMappedRow = this._mapData(oRow);
-                    oModel.createEntry("/ReadinessTmp", {
-                        properties: oMappedRow
-                    });
-                }
+        // async openSpreadsheetUploadDialog(oEvent) {
+        //     this.getView().setBusyIndicatorDelay(0)
+        //     this.getView().setBusy(true)
+        //     this.spreadsheetUpload = await this.getView().getController().getOwnerComponent().createComponent({
+        //         usage: "spreadsheetImporter",
+        //         async: true,
+        //         componentData: {
+        //             context: this,
+        //             columns,
+        //             standalone: true
+        //         }
+        //     });
 
-                // for each chunk (a bunch of rows) submit the created entries inside a promise
-                // promise will be resolved or rejected depending on the response status
-                // batch requests will always land in success, even if there was an exception in the backend
-                return new Promise((resolve, reject) => {
-                    oModel.submitChanges({
-                        success: (oData) => {
-                            // oData.__batchResponses[0].__changeResponses[0].statusCode (when success)
-                            const iStatusCode = +(oData?.__batchResponses?.[0]?.response?.statusCode ?? 200);
-                            if (iStatusCode < 300) {
-                                resolve();
-                            } else {
-                                reject(oData?.__batchResponses?.[0]?.response?.body);
-                            }
-                        },
-                        error: (oError) => {
-                            // if the response gets here there is probably some other error with the system or the service on a more general level
-                            reject();
-                        }
-                    });
-                })
-            });
+        //     this.spreadsheetUpload.openSpreadsheetUploadDialog();
+        //     this.getView().setBusy(false);
 
-            try {
-                await Promise.all(aChunkPromises);
-                const oContext = this.getView().getBindingContext();
-                this.extensionAPI.invokeActions("/new_projectflat", oContext);
-                MessageBox.success("Verarbeitung erfolgreich");
-            } catch (e) {
-                await oModel.resetChanges();
-                MessageBox.error(e);
-            } finally {
-                this.getView().setBusy(false);
-            }
-        },
+        //     this.spreadsheetUpload.attachUploadButtonPress(this.onUploadButtonPress.bind(this));
+        // },
 
-        _createChunks(aItems) {
-            const aResult = []
-            for (let i = 0; i < aItems.length; i += batchSize) {
-                const aChunk = aItems.slice(i, i + batchSize);
-                aResult.push(aChunk)
-            }
-            return aResult;
-        },
+        // async onUploadButtonPress(oEvent) {
+        //     this.getView().setBusy(true);
+        //     const oUploadHelper = this.getTempUploadHelper();
+        //     const oModel = this.getView().getModel();
+        //     const aRawItems = oEvent.getParameter("rawData")
+        //     const aChunks = oUploadHelper.createChunks(aRawItems);
 
-        _mapData(oRow) {
-            return {
-                Checktitle: oRow["Check Title"],
-                Checkmessage: oRow["Check Message"],
-                Sapnote: oRow["SAP Note Number"],
-                Referencedobjecttype: oRow["Ref. Object Type"],
-                Referencedobjectname: oRow["Ref. Object Name"],
-                ObjectType: oRow["Object Type"],
-                ObjectName: oRow["Object Name"],
-                Priority: oRow["Priority"],
-                Developmentpackage: oRow["Package"],
-                Used: this._mapUsed(oRow["Usage Information"])
-            }
-        },
+        //     // map all chunks to a request promise
+        //     const aChunkPromises = aChunks.map(oUploadHelper.submitChunk.bind(oUploadHelper));
 
-        _mapUsed(sText) {
-            return {
-                "Used": "X",
-                "Unused": "U",
-                "Unknown": "R"
-            }[sText] ?? ""
-        }
+        //     try {
+        //         await Promise.all(aChunkPromises);
+        //         const oContext = this.getView().getBindingContext();
+        //         await this.extensionAPI.invokeActions("/new_projectflat", oContext);
+        //         MessageBox.success("Verarbeitung erfolgreich");
+        //     } catch (e) {
+        //         await oModel.resetChanges();
+        //         MessageBox.error(e);
+        //     } finally {
+        //         this.getView().setBusy(false);
+        //     }
+        // },
     };
 });

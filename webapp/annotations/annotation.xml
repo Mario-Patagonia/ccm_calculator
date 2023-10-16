@@ -13,6 +13,11 @@
     </edmx:Reference>
     <edmx:DataServices>
         <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local">
+            <Annotations Target="cds_zccm_conv_proj_sd.cds_zccm_conv_proj_sd_Entities/ConversionProject">
+                <Annotation Term="UI.CreateHidden">
+                    <Bool>true</Bool>
+                </Annotation>
+            </Annotations>
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>

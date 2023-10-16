@@ -121,19 +121,35 @@
         "extends": {
             "extensions": {
                 "sap.ui.controllerExtensions": {
-                    "sap.suite.ui.generic.template.ObjectPage.view.Details": {
-                        "controllerName": "zui5ccm.ccmcalculator.ext.controller.ObjectPageExt",
+                    "sap.suite.ui.generic.template.ListReport.view.ListReport": {
+                        "controllerName": "zui5ccm.ccmcalculator.ext.controller.ListReportExt",
                         "sap.ui.generic.app": {
                             "ConversionProject": {
                                 "EntitySet": "ConversionProject",
-                                "Header": {
-                                    "Actions": {
-                                        "spreadsheetUploadButton": {
-                                            "id": "spreadsheetUploadButtonButton",
-                                            "text": "{{UPLOAD_BUTTON_TEXT}}",
-                                            "press": "openSpreadsheetUploadDialog",
-                                            "requiresSelection": false
-                                        }
+                                "Actions": {
+                                    "spreadsheetUpload": {
+                                        "id": "spreadsheetUploadButton",
+                                        "text": "{{UPLOAD_BUTTON_TEXT}}",
+                                        "press": "openSpreadsheetUploadDialog",
+                                        "global": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "_TMP_DISABLED_sap.suite.ui.generic.template.ObjectPage.view.Details": {
+                    "controllerName": "zui5ccm.ccmcalculator.ext.controller.ObjectPageExt",
+                    "sap.ui.generic.app": {
+                        "ConversionProject": {
+                            "EntitySet": "ConversionProject",
+                            "Header": {
+                                "Actions": {
+                                    "spreadsheetUploadButton": {
+                                        "id": "spreadsheetUploadButton",
+                                        "text": "{{UPLOAD_BUTTON_TEXT}}",
+                                        "press": "openSpreadsheetUploadDialog",
+                                        "requiresSelection": false
                                     }
                                 }
                             }
@@ -159,6 +175,9 @@
                     "list": true,
                     "settings": {
                         "condensedTableLayout": true,
+                        "dataLoadSettings": {
+                            "loadDataOnAppLaunch": "always"
+                        },
                         "smartVariantManagement": true,
                         "enableTableFilterInPageVariant": true,
                         "filterSettings": {
