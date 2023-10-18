@@ -62,9 +62,22 @@ sap.ui.define([
             try {
                 await Promise.all(aChunkPromises);
                 const oContext = this.getView().getBindingContext();
-                await this.extensionAPI.invokeActions("/new_projectflat", oContext);
+                const [oActionResponse] = await this.extensionAPI.invokeActions("/new_projectflat", oContext);
+
                 this.extensionAPI.refreshTable();
-                MessageBox.success("Verarbeitung erfolgreich");
+                MessageBox.success("Verarbeitung erfolgreich", {
+                    onClose: (sAction) => {
+                        if (sAction === MessageBox.Action.CANCEL) {
+                            return;
+                        }
+
+                        const oResponseContext = oActionResponse.response.context;
+                        this.extensionAPI
+                            .getNavigationController()
+                            .navigateInternal(oResponseContext);
+                    },
+                    actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL]
+                });
             } catch (e) {
                 await oModel.resetChanges();
                 MessageBox.error(e);
