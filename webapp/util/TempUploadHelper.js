@@ -64,10 +64,10 @@ sap.ui.define([
                 Checktitle: oRow["Check Title"],
                 Checkmessage: oRow["Check Message"],
                 Sapnote: oRow["SAP Note Number"],
-                Referencedobjecttype: oRow["Ref. Object Type"],
-                Referencedobjectname: oRow["Ref. Object Name"],
+                Referencedobjecttype: oRow["Ref. Object Type"] ?? oRow["Referenced Object Type"],
+                Referencedobjectname: oRow["Ref. Object Name"] ?? oRow["Referenced Object"],
                 ObjectType: oRow["Object Type"],
-                ObjectName: oRow["Object Name"],
+                ObjectName: oRow["Object Name"] ?? oRow["Object name"],
                 Priority: oRow["Priority"],
                 Developmentpackage: oRow["Package"],
                 Used: this._mapUsed(oRow["Usage Information"])
@@ -84,7 +84,7 @@ sap.ui.define([
                 Used: "X",
                 Unused: "U",
                 Unknown: "R"
-            }[sText] ?? ""
+            }[sText] ?? "X"
         }
     });
 });
