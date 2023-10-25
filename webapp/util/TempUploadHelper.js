@@ -4,6 +4,53 @@ sap.ui.define([
 ], function (Constant, BaseObject) {
     "use strict";
 
+    const oMapping = {
+        Checktitle: {
+            SourceKeys: ["Check Title", "Prüftitel"],
+            Converter: x => x
+        },
+        Checkmessage: {
+            SourceKeys: ["Check Message", "Prüfmeldung"],
+            Converter: x => x
+        },
+        Sapnote: {
+            SourceKeys: ["SAP Note Number", "Hinweis"],
+            Converter: x =>  x ? `${x}` : ''
+        },
+        Referencedobjecttype: {
+            SourceKeys: ["Ref. Object Type", "Referenced Object Type", "RObT"],
+            Converter: x => x
+        },
+        Referencedobjectname: {
+            SourceKeys: ["Ref. Object Name", "Referenced Object", "Referenzobjekt"],
+            Converter: x => x
+        },
+        ObjectType: {
+            SourceKeys: ["Object Type", "Obj"],
+            Converter: x => x
+        },
+        ObjectName: {
+            SourceKeys: ["Object Name", "Object name", "Objektname"],
+            Converter: x => x
+        },
+        Priority: {
+            SourceKeys: ["Priority", "Priorität"],
+            Converter: x => x
+        },
+        Developmentpackage: {
+            SourceKeys: ["Package", "Paket"],
+            Converter: x => x
+        },
+        Used: {
+            SourceKeys: ["Usage Information"],
+            Converter: x => ({
+                Used: "X",
+                Unused: "U",
+                Unknown: "R"
+            }[x] ?? "X")
+        },
+    }
+
     return BaseObject.extend("zui5ccm.ccmcalculator.util.TempUploadHelper", {
 
         constructor: function (oModel) {
@@ -60,31 +107,13 @@ sap.ui.define([
          * @returns {object}
          */
         _mapData(oRow) {
-            return {
-                Checktitle: oRow["Check Title"],
-                Checkmessage: oRow["Check Message"],
-                Sapnote: oRow["SAP Note Number"],
-                Referencedobjecttype: oRow["Ref. Object Type"] ?? oRow["Referenced Object Type"],
-                Referencedobjectname: oRow["Ref. Object Name"] ?? oRow["Referenced Object"],
-                ObjectType: oRow["Object Type"],
-                ObjectName: oRow["Object Name"] ?? oRow["Object name"],
-                Priority: oRow["Priority"],
-                Developmentpackage: oRow["Package"],
-                Used: this._mapUsed(oRow["Usage Information"])
-            }
-        },
-
-        /**
-         * Convert values so they match domain ZCCM_OBJECT_USED
-         * @param {string} sText 
-         * @returns {string}
-         */
-        _mapUsed(sText) {
-            return {
-                Used: "X",
-                Unused: "U",
-                Unknown: "R"
-            }[sText] ?? "X"
+            return Object.keys(oMapping)
+                .reduce((oCurr, sTargetKey) => {
+                    const oKeyMapping = oMapping[sTargetKey];
+                    const sSourceKey = oKeyMapping.SourceKeys.find(sSourceKey => oRow[sSourceKey]);
+                    oCurr[sTargetKey] = oKeyMapping.Converter(oRow[sSourceKey]) ?? "";
+                    return oCurr;
+                }, {});
         }
     });
 });
