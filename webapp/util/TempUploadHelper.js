@@ -14,19 +14,19 @@ sap.ui.define([
             Converter: x => x
         },
         Sapnote: {
-            SourceKeys: ["SAP Note Number", "Hinweis"],
+            SourceKeys: ["SAP Note Number", "Hinweis", "SAP-Hinweisnummer"],
             Converter: x =>  x ? `${x}` : ''
         },
         Referencedobjecttype: {
-            SourceKeys: ["Ref. Object Type", "Referenced Object Type", "RObT"],
+            SourceKeys: ["Ref. Object Type", "Referenced Object Type", "RObT", "Referenz. Objekttyp"],
             Converter: x => x
         },
         Referencedobjectname: {
-            SourceKeys: ["Ref. Object Name", "Referenced Object", "Referenzobjekt"],
+            SourceKeys: ["Ref. Object Name", "Referenced Object", "Referenzobjekt", "Referenz. Obj.-Name"],
             Converter: x => x
         },
         ObjectType: {
-            SourceKeys: ["Object Type", "Obj"],
+            SourceKeys: ["Object Type", "Obj", "Objekttyp"],
             Converter: x => x
         },
         ObjectName: {
@@ -42,7 +42,7 @@ sap.ui.define([
             Converter: x => x
         },
         Used: {
-            SourceKeys: ["Usage Information"],
+            SourceKeys: ["Usage Information", "Verwendungsinformation"],
             Converter: x => ({
                 Used: "X",
                 Unused: "U",
