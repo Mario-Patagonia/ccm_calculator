@@ -44,9 +44,14 @@ sap.ui.define([
         Used: {
             SourceKeys: ["Usage Information", "Verwendungsinformation"],
             Converter: x => ({
+                Referenced: "X",
+                Referenziert: "X",
                 Used: "X",
+                Verwendet: "X",
                 Unused: "U",
-                Unknown: "R"
+                "Nicht verwendet": "U",
+                Unknown: "R",
+                Unbekannt: "R",
             }[x] ?? "X")
         },
     }

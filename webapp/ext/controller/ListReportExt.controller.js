@@ -1,9 +1,10 @@
 sap.ui.define([
     "zui5ccm/ccmcalculator/model/Constant",
     "zui5ccm/ccmcalculator/util/TempUploadHelper",
+    "zui5ccm/ccmcalculator/ext/fragment/ProgressDialog",
     "sap/m/library",
     "sap/m/MessageBox"
-], function (Constant, TempUploadHelper, mLibrary, MessageBox) {
+], function (Constant, TempUploadHelper, ProgressDialog, mLibrary, MessageBox) {
     'use strict';
 
     const columns = Constant.Columns;
@@ -28,6 +29,11 @@ sap.ui.define([
         getTempUploadHelper() {
             this.oTempUploadHelper ??= new TempUploadHelper(this.getView().getModel());
             return this.oTempUploadHelper;
+        },
+
+        getProgressDialog() {
+            this.oProgressDialog ??= new ProgressDialog(this);
+            return this.oProgressDialog;
         },
 
         async openSpreadsheetUploadDialog(oEvent) {
@@ -56,11 +62,18 @@ sap.ui.define([
             const aRawItems = oEvent.getParameter("rawData")
             const aChunks = oUploadHelper.createChunks(aRawItems);
 
-            // map all chunks to a request promise
-            const aChunkPromises = aChunks.map(oUploadHelper.submitChunk.bind(oUploadHelper));
+            const iTotal = aRawItems.length;
+            let iToBeDone = iTotal;
+
+            const oDialog = this.getProgressDialog();
 
             try {
-                await Promise.all(aChunkPromises);
+                oDialog.open(iTotal);
+                for (const oChunk of aChunks) {
+                    await oUploadHelper.submitChunk(oChunk);
+                    iToBeDone -= oChunk.length
+                    oDialog.update(iTotal - iToBeDone);
+                }
                 const oContext = this.getView().getBindingContext();
                 const [oActionResponse] = await this.extensionAPI.invokeActions("/new_projectflat", oContext);
 
