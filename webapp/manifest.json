@@ -137,24 +137,6 @@
                             }
                         }
                     }
-                },
-                "_TMP_DISABLED_sap.suite.ui.generic.template.ObjectPage.view.Details": {
-                    "controllerName": "zui5ccm.ccmcalculator.ext.controller.ObjectPageExt",
-                    "sap.ui.generic.app": {
-                        "ConversionProject": {
-                            "EntitySet": "ConversionProject",
-                            "Header": {
-                                "Actions": {
-                                    "spreadsheetUploadButton": {
-                                        "id": "spreadsheetUploadButton",
-                                        "text": "{{UPLOAD_BUTTON_TEXT}}",
-                                        "press": "openSpreadsheetUploadDialog",
-                                        "requiresSelection": false
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }

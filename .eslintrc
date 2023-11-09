@@ -1,0 +1,5 @@
+{
+    "extends": [
+        "@gambit_de/eslint-config-ui5-js"
+    ]
+}

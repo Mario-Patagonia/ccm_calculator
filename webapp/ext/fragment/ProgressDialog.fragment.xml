@@ -1,44 +1,51 @@
 <core:FragmentDefinition
-        xmlns="sap.m"
-        xmlns:core="sap.ui.core"
-        xmlns:form="sap.ui.layout.form">
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+>
 
     <Dialog
-            id="progressDialog"
-            title="Uploading..."
-            contentWidth="40vw"
-            contentHeight="130px"
-            verticalScrolling="false">
+        id="progressDialog"
+        title="Uploading..."
+        contentWidth="40vw"
+        contentHeight="130px"
+        verticalScrolling="false"
+    >
         <content>
             <FlexBox
-                    id="progressFlex"
-                    direction="Column"
-                    height="100%"
-                    width="80%"
-                    alignItems="Stretch"
-                    justifyContent="Center"
-                    fitContainer="true"
-                    class="centered">
+                id="progressFlex"
+                direction="Column"
+                height="100%"
+                width="80%"
+                alignItems="Stretch"
+                justifyContent="Center"
+                fitContainer="true"
+                class="centered"
+            >
                 <BusyIndicator
-                        id="progressBusy"
-                        visible="true">
+                    id="progressBusy"
+                    visible="true"
+                >
                     <layoutData>
                         <FlexItemData
-                                id="progressBusyFlex"
-                                growFactor="2"
-                                styleClass="centeredFlex" />
+                            id="progressBusyFlex"
+                            growFactor="2"
+                            styleClass="centeredFlex"
+                        />
                     </layoutData>
                 </BusyIndicator>
                 <ProgressIndicator
-                        id="progressInd"
-                        displayValue="{dialog>/displayVal}/{dialog>/total}"
-                        percentValue="{dialog>/percentVal}"
-                        showValue="true">
+                    id="progressInd"
+                    displayValue="{dialog>/displayVal}/{dialog>/total}"
+                    percentValue="{dialog>/percentVal}"
+                    showValue="true"
+                >
                     <layoutData>
                         <FlexItemData
-                                id="progressIndFlex"
-                                growFactor="4"
-                                styleClass="centeredFlex" />
+                            id="progressIndFlex"
+                            growFactor="4"
+                            styleClass="centeredFlex"
+                        />
                     </layoutData>
                 </ProgressIndicator>
             </FlexBox>

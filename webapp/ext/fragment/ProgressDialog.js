@@ -11,7 +11,7 @@ sap.ui.define(
                     this.getDialogModel().setProperty("/total", iTotal);
                     this.getDialogModel().setProperty("/percentVal", 0);
                     this.getDialogModel().setProperty("/displayVal", 0);
-                    
+
                     return this;
                 },
 
@@ -24,7 +24,7 @@ sap.ui.define(
                     if (iCurrent === iTotal) {
                         this.fragment.close();
                     }
-                }
+                },
             },
         );
         return DraftDialog;

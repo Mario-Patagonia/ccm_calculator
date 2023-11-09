@@ -1,21 +1,19 @@
-sap.ui.define([], function () {
-
+sap.ui.define([], () => {
     "use strict";
 
     return {
         BatchSize: 1000,
         Columns: [
-            "Check Title", 
-            "Check Message", 
-            "SAP Note Number", 
-            "Ref. Object Type", 
-            "Ref. Object Name", 
-            "Object Type", 
-            "Object Name", 
-            "Priority", 
-            "Package", 
-            "Usage Information"
+            "Check Title",
+            "Check Message",
+            "SAP Note Number",
+            "Ref. Object Type",
+            "Ref. Object Name",
+            "Object Type",
+            "Object Name",
+            "Priority",
+            "Package",
+            "Usage Information",
         ],
-    }
-
+    };
 });
